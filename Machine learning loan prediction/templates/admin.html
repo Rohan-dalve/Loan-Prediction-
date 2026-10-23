@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            width: 30%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            color: black;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+        }
+
+        .retrain-btn {
+            background: green;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div style="background:green;color:white;padding:10px;margin:10px;border-radius:8px;">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<h2>Admin Panel 🔥</h2>
+
+<div class="container">
+
+    <!-- 🔁 RETRAIN BUTTON -->
+    <form action="/retrain" method="post">
+        <button class="retrain-btn">Retrain Model 🔁</button>
+    </form>
+
+    <!-- 📊 CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3>👥 Total Users</h3>
+            <h1>{{ total_users }}</h1>
+        </div>
+
+        <div class="card">
+            <h3>📊 Total Predictions</h3>
+            <h1>{{ total_predictions }}</h1>
+        </div>
+
+        <div class="card">
+            <h3>✅ Approved Loans</h3>
+            <h1>{{ approved }}</h1>
+        </div>
+    </div>
+
+    <!-- 📋 TABLE -->
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Married</th>
+            <th>Dependents</th>
+            <th>Income</th>
+            <th>Prediction</th>
+            <th>Action</th>
+        </tr>
+
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] or 'N/A' }}</td>
+            <td>{{ row[2] or 'N/A' }}</td>
+            <td>{{ row[3] or 'N/A' }}</td>
+            <td>{{ row[4] or 'N/A' }}</td>
+            <td>{{ row[5] or 'No Prediction ❌' }}</td>
+
+            <td>
+                <form action="/delete_user" method="post">
+                    <input type="hidden" name="email" value="{{ row[0] }}">
+                    <button class="delete-btn">Delete ❌</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        <h3>Loan Stats 📊</h3>
+        <img src="{{ url_for('static', filename='chart.png') }}">
+    </table>
+
+</div>
+
+</body>
+</html>

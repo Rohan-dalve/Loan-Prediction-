@@ -1,0 +1,6 @@
+import pickle
+
+pickle.dump(clf, open("clf.pkl", "wb"))
+pickle.dump(reg, open("reg.pkl", "wb"))
+pickle.dump(X_cls.columns, open("cols_cls.pkl", "wb"))
+pickle.dump(X_reg.columns, open("cols_reg.pkl", "wb"))

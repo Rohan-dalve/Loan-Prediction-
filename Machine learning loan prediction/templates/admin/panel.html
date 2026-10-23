@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h2>Admin Panel</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <p>Total users: {{ total_users }}</p>
+    <p>Total predictions: {{ total_predictions }}</p>
+    <p>Approved loans: {{ approved }}</p>
+
+    <form method="get" action="{{ url_for('admin.panel') }}">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search name or email">
+        <button type="submit">Search</button>
+    </form>
+
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Predictions</th>
+                <th>Last Prediction</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user["name"] }}</td>
+                <td>{{ user["email"] }}</td>
+                <td>{{ user["role"] }}</td>
+                <td>{{ user["predictions"] }}</td>
+                <td>{{ user["last_prediction"] or "-" }}</td>
+                <td>
+                    {% if user["role"] != "admin" %}
+                    <form method="post" action="{{ url_for('admin.delete_user') }}">
+                        <input type="hidden" name="user_id" value="{{ user['id'] }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No users found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Page {{ page }} of {{ total_pages }}</p>
+    <p>
+        {% if page > 1 %}
+            <a href="{{ url_for('admin.panel', q=query, page=page-1) }}">Previous</a>
+        {% endif %}
+        {% if page < total_pages %}
+            <a href="{{ url_for('admin.panel', q=query, page=page+1) }}">Next</a>
+        {% endif %}
+    </p>
+
+    <p><a href="{{ url_for('auth.logout') }}">Logout</a></p>
+</body>
+</html>

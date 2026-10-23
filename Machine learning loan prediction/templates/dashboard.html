@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+
+    <!-- 🔥 AUTO REFRESH -->
+    <meta http-equiv="refresh" content="5">
+
+</head>
+<body>
+
+<h2>Your Prediction History 📊</h2>
+
+<table border="1">
+<tr>
+    <th>Gender</th>
+    <th>Married</th>
+    <th>Dependents</th>
+    <th>Self Employed</th>
+    <th>Income</th>
+    <th>Credit</th>
+    <th>Property Area</th>
+    <th>Prediction</th>
+</tr>
+
+{% for row in data %}
+<tr>
+    <td>{{ row[2] }}</td>  <!-- gender -->
+    <td>{{ row[3] }}</td>  <!-- married -->
+    <td>{{ row[4] }}</td>  <!-- dependents -->
+    <td>{{ row[5] }}</td>  <!-- self_employed -->
+    <td>{{ row[6] }}</td>  <!-- income -->
+    <td>{{ row[7] }}</td>  <!-- credit -->
+    <td>{{ row[8] }}</td>  <!-- property -->
+    <td>{{ row[9] }}</td>  <!-- prediction -->
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

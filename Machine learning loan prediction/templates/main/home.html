@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Prediction</title>
+</head>
+<body>
+    <h2>Loan Prediction</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('main.predict') }}" method="post">
+        <label>Gender</label>
+        <select name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <label>Married</label>
+        <select name="married" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Dependents</label>
+        <input type="text" name="dependents" placeholder="0 / 1 / 2 / 3+" required>
+
+        <label>Self Employed</label>
+        <select name="self_employed" required>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+
+        <label>Income</label>
+        <input type="number" name="income" min="0" required>
+
+        <label>Credit History</label>
+        <select name="credit_history" required>
+            <option value="1">1</option>
+            <option value="0">0</option>
+        </select>
+
+        <label>Property Area</label>
+        <select name="property_area" required>
+            <option value="Urban">Urban</option>
+            <option value="Semiurban">Semiurban</option>
+            <option value="Rural">Rural</option>
+        </select>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <p><a href="{{ url_for('main.dashboard') }}">View Dashboard</a></p>
+    <p><a href="{{ url_for('auth.logout') }}">Logout</a></p>
+</body>
+</html>
